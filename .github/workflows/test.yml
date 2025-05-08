@@ -1,12 +1,26 @@
 name: "test workflow"
+
 on:
+  workflow_dispatch:
+  schedule:
+      - cron: "*/30 * * * *"
   push:
     branches: [master]
-  workflow_dispatch:
 
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo test
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: just echo
+        run: echo test
+
+      - name: random sleep
+        run : |
+          export TIME=$((RANDOM % 31))
+          echo "sleeping for ${TIME} seconds"
+          sleep ${TIME}
+          echo "done sleeping"
